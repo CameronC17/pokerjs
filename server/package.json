@@ -1,0 +1,25 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "A JavaScript poker server.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CameronC17/pokerjs.git"
+  },
+  "keywords": [
+    "poker",
+    "nodejs",
+    "socket.io"
+  ],
+  "author": "Cameron Chalmers",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CameronC17/pokerjs/issues"
+  },
+  "homepage": "https://github.com/CameronC17/pokerjs#readme"
+}
