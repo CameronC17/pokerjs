@@ -6,6 +6,10 @@ var animFrame = window.requestAnimationFrame || window.webkitRequestAnimationFra
 
 window.addEventListener('mousedown', saveMouse, false);
 
+//Table local variables
+var tableX = 350,
+    tableY = 300;
+
 //Creating instances of canvas and the canvas' 2d drawing
 var c = document.getElementById("pcanvas");
 var ctx = c.getContext("2d");
@@ -16,7 +20,16 @@ function mainLoop() {
 
 function drawStationary() {
   drawBackground();
-  drawTable(250, 200, "green", "#003300");
+  drawSeats(tableX, tableY);
+  drawTable(tableX, tableY, "green", "#003300");
+  drawTableMarkings(tableX, tableY);
+  drawTestMarkers(tableX, tableY);
+}
+
+function drawTestMarkers() {
+  ctx.fillStyle="#ff4dff";
+  ctx.fillRect(c.width/2, 0, 1, c.height);
+  ctx.fillRect(0, c.height/2, c.width, 1);
 }
 
 function drawBackground() {
@@ -24,12 +37,29 @@ function drawBackground() {
   ctx.fillRect(0, 0, c.width, c.height);
 }
 
+function drawSeats(tX, tY) {
+  //dealers seat
+  //drawCircle(tX + 360, tY - 90, 70, "#0000e6", "#000066");
+  drawCircle(c.width/2, tY - 90, 70, "#0000e6", "#000066");
+
+  //player seats
+  drawCircle(tX - 130, tY + 15, 70, "#e60000", "#660000");
+  drawCircle(tX - 140, tY + 260, 70, "#e60000", "#660000");
+  drawCircle(tX - 70, tY + 500, 70, "#e60000", "#660000");
+  drawCircle(tX + 210, tY + 540, 70, "#e60000", "#660000");
+  drawCircle(tX + 490, tY + 540, 70, "#e60000", "#660000");
+  drawCircle(tX + 770, tY + 500, 70, "#e60000", "#660000");
+  drawCircle(tX + 850, tY + 260, 70, "#e60000", "#660000");
+  drawCircle(tX + 830, tY + 15, 70, "#e60000", "#660000");
+
+}
+
 function drawTable(x, y, insideColour, outsideColour) {
   //4 corner circles
-  drawCircle(250, 200, 100, "green", "#003300");
-  drawCircle(950, 200, 100, "green", "#003300");
-  drawCircle(250, 600, 100, "green", "#003300");
-  drawCircle(950, 600, 100, "green", "#003300");
+  drawCircle(x, y, 100, "green", "#003300");
+  drawCircle(x + 700, y, 100, "green", "#003300");
+  drawCircle(x, y + 400, 100, "green", "#003300");
+  drawCircle(x + 700, y + 400, 100, "green", "#003300");
 
   //outside lines
   ctx.fillStyle = outsideColour;
@@ -40,20 +70,30 @@ function drawTable(x, y, insideColour, outsideColour) {
 
   //bulk of the green to cover the table
   ctx.fillStyle="green";
-  ctx.fillRect(152, 200, 896, 400);
-  ctx.fillRect(250, 102, 700, 596);
-
+  ctx.fillRect(x - 98, y, 896, 400);
+  ctx.fillRect(x, y - 98, 700, 596);
 
 }
 
 function drawCircle(x, y, rad, colour, lColour) {
+  ctx.strokeStyle = lColour;
   ctx.beginPath();
   ctx.arc(x, y, rad, 0, 2 * Math.PI, false);
   ctx.fillStyle = colour;
   ctx.fill();
   ctx.lineWidth = 5;
-  ctx.strokeStyle = lColour;
   ctx.stroke();
+  ctx.closePath();
+}
+
+function drawTableMarkings(tX, tY) {
+  //5 slots for the river
+  ctx.fillStyle="#006600";
+  ctx.fillRect(tX + 160, tY + 180, 60, 80);
+  ctx.fillRect(tX + 240, tY + 180, 60, 80);
+  ctx.fillRect(tX + 320, tY + 180, 60, 80);
+  ctx.fillRect(tX + 400, tY + 180, 60, 80);
+  ctx.fillRect(tX + 480, tY + 180, 60, 80);
 }
 
 //This loops the animation frames for animation!!!!
