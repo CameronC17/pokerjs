@@ -8,7 +8,9 @@ var io = require('socket.io').listen(server);
 //Classes /////////////////////////////////////////////////////////////////////////////////////////////
 var ClientHolder = require('./ClientHolder').ClientHolder;
 var Client = require('./Client').Client;
-console.log(Client);
+var RoomHolder = require('./RoomHolder').RoomHolder;
+var Room = require('./Room').Room;
+
 
 //Game variables //////////////////////////////////////////////////////////////////////////////////////
 var endGame = false;
@@ -17,7 +19,10 @@ var gameTick = 20;
 var deck = [];
 var maxPlayers = 8;
 var clients = new ClientHolder();
-var rooms = [];
+var rooms = new RoomHolder();
+
+//Just for testing, create 3 rooms
+
 
 //Client connection functions
 io.on('connection', onConnect);
@@ -27,17 +32,16 @@ function onConnect(socket) {
 	//clients.push([socket.id, clients.length + 1]);
   var newClient = new Client(socket.id);
   clients.addClient(newClient);
-	console.log("There are currently " + clients.getConnected() + " users online.");
+	console.log("There are currently " + clients.getConnected() + " clients connected.");
 
 	//Functions here can only be ran once user is connected
 	socket.on("disconnect", onDisconnect);
 };
 
 function onDisconnect() {
-  //clients.splice(clientPosByID(this.id), 1);
   clients.removeClient(this.id);
   console.log("\n - Disconnected. Reference: " + this.id);
-  console.log("There are currently " + clients.getConnected() + " users online.");
+  console.log("There are currently " + clients.getConnected() + " clients connected.");
 };
 
 //Server start functions ////////////////////////////////////////////////////////////////////////////////
