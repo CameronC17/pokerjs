@@ -6,42 +6,8 @@ var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 
 //Classes /////////////////////////////////////////////////////////////////////////////////////////////
-class ClientHolder {
-  constructor() {
-    this.clients = [];
-  }
-
-  addClient(client) {
-    this.clients.push(client);
-  }
-
-  removeClient(id) {
-    this.clients.splice(this.findClientByID(this.id), 1);
-  }
-
-  findClientByID(id) {
-    for (var i = 0; i < this.clients.length; i++) {
-      if (this.clients[i].getID() == id) {
-        return id;
-      }
-    }
-  }
-
-  getConnected() {
-    return this.clients.length;
-  }
-}
-
-class Client {
-  constructor(id) {
-    this.clientID = id;
-  }
-
-  getID() {
-    return this.clientID;
-  }
-
-}
+var ClientHolder = require('./ClientHolder').ClientHolder;
+var Client = require('./Client').Client;
 
 //Game variables //////////////////////////////////////////////////////////////////////////////////////
 var endGame = false;
@@ -79,7 +45,7 @@ console.log("\n\n----------------------\nServer started.\nListening on PORT: " +
 //DB CONNECT HERE
 //console.log('Database connection: Successful.');
 console.log("Starting game engine..." + "\n----------------------");
-game();
+//game();
 //sendUpdate();
 
 
