@@ -11,6 +11,7 @@ var Client = require('./Client').Client;
 var RoomHolder = require('./RoomHolder').RoomHolder;
 var Room = require('./Room').Room;
 
+var Deck = require('./Deck').Deck;
 
 //Game variables //////////////////////////////////////////////////////////////////////////////////////
 var endGame = false;
@@ -22,7 +23,16 @@ var clients = new ClientHolder();
 var rooms = new RoomHolder();
 
 //Just for testing, create 3 rooms
+var deck1 = new Deck();
+var room1 = new Room(deck1, 1, 2, 50);
+var deck2 = new Deck();
+var room2 = new Room(deck2, 2, 4, 100);
+var deck3 = new Deck();
+var room3 = new Room(deck3, 5, 10, 500);
 
+rooms.addRoom(room1);
+rooms.addRoom(room2);
+rooms.addRoom(room3);
 
 //Client connection functions
 io.on('connection', onConnect);

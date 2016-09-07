@@ -4,17 +4,23 @@ class RoomHolder {
     this.roomID = 1;
   }
 
-  createRoom() {
-    this.rooms.push(null);
+  addRoom(room) {
+    this.rooms.push(room);
   }
 
-  removeRoom(id) {
-    this.clients.splice(this.findClientByID(this.id), 1);
+  removeRoom() {
+
   }
 
-  getConnected() {
-    return this.clients.length;
+  getRoom(id) {
+    return this.rooms[id];
   }
+
+  //runs through each room and continues the game if necessary
+  engineRooms() {
+
+  }
+
 }
 
 exports.RoomHolder = RoomHolder;

@@ -1,11 +1,11 @@
 class Room {
-  constructor(chatRoomID, deck, sb, bb, wallet) {
+  constructor(deck, sb, bb, tableWallet) {
     this.players = [];
     this.gameState = 0;
-    this.chatRoomID = chatRoomID;
+    this.deck = deck;
     this.sb = sb;
     this.bb = bb;
-    this.wallet = wallet;
+    this.tWallet = tableWallet;
   }
 
 }
