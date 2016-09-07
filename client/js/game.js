@@ -16,6 +16,7 @@ var ctx = c.getContext("2d");
 
 function mainLoop() {
   drawStationary();
+  drawCard();
 }
 
 function drawStationary() {
@@ -94,6 +95,22 @@ function drawTableMarkings(tX, tY) {
   ctx.fillRect(tX + 320, tY + 180, 60, 80);
   ctx.fillRect(tX + 400, tY + 180, 60, 80);
   ctx.fillRect(tX + 480, tY + 180, 60, 80);
+  //dealer slot
+  ctx.fillRect(tX + 380, tY - 80, 60, 80);
+}
+
+function drawCard() {
+  ctx.fillStyle="#fff";
+  ctx.fillRect(735, 225, 50, 70);
+  ctx.fillStyle="#ff751a";
+  ctx.fillRect(737, 227, 46, 66);
+  ctx.fillStyle="#fff";
+  ctx.fillRect(737, 235, 46, 2);
+  ctx.fillRect(737, 282, 46, 2);
+
+  ctx.fillRect(753, 236, 1, 48);
+  ctx.fillRect(759, 236, 2, 48);
+  ctx.fillRect(766, 236, 1, 48);
 }
 
 //This loops the animation frames for animation!!!!
