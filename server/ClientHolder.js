@@ -23,3 +23,5 @@ class ClientHolder {
     return this.clients.length;
   }
 }
+
+exports.ClientHolder = ClientHolder;

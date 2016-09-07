@@ -8,3 +8,5 @@ class Client {
   }
 
 }
+
+exports.Client = Client;
