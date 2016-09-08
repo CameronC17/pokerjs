@@ -10,21 +10,31 @@ window.addEventListener('mousedown', saveMouse, false);
 var tableX = 350,
     tableY = 300;
 
+var playerSeatCards = [[tableX - 80, tableY - 30],
+                        [tableX - 80, tableY + 200],
+                        [tableX - 60, tableY + 400],
+                        [tableX + 160, tableY + 410],
+                        [tableX + 430, tableY + 410],
+                        [tableX + 650, tableY + 400],
+                        [tableX + 670, tableY + 200],
+                        [tableX + 670, tableY - 30]];
+
 //Creating instances of canvas and the canvas' 2d drawing
 var c = document.getElementById("pcanvas");
 var ctx = c.getContext("2d");
 
 function mainLoop() {
   drawStationary();
-  drawCard();
+  drawPlayerCardSlots();
+  drawCard("d3", 40, 100);
+  drawTestMarkers();
 }
 
 function drawStationary() {
   drawBackground();
   drawSeats(tableX, tableY);
   drawTable(tableX, tableY, "green", "#003300");
-  drawTableMarkings(tableX, tableY);
-  drawTestMarkers(tableX, tableY);
+  drawTableMarkings();
 }
 
 function drawTestMarkers() {
@@ -38,21 +48,20 @@ function drawBackground() {
   ctx.fillRect(0, 0, c.width, c.height);
 }
 
-function drawSeats(tX, tY) {
+function drawSeats() {
   //dealers seat
   //drawCircle(tX + 360, tY - 90, 70, "#0000e6", "#000066");
-  drawCircle(c.width/2, tY - 90, 70, "#0000e6", "#000066");
+  drawCircle(c.width/2, tableY - 90, 70, "#0000e6", "#000066");
 
   //player seats
-  drawCircle(tX - 130, tY + 15, 70, "#e60000", "#660000");
-  drawCircle(tX - 140, tY + 260, 70, "#e60000", "#660000");
-  drawCircle(tX - 70, tY + 500, 70, "#e60000", "#660000");
-  drawCircle(tX + 210, tY + 540, 70, "#e60000", "#660000");
-  drawCircle(tX + 490, tY + 540, 70, "#e60000", "#660000");
-  drawCircle(tX + 770, tY + 500, 70, "#e60000", "#660000");
-  drawCircle(tX + 850, tY + 260, 70, "#e60000", "#660000");
-  drawCircle(tX + 830, tY + 15, 70, "#e60000", "#660000");
-
+  drawCircle(tableX - 130, tableY + 15, 70, "#e60000", "#660000");
+  drawCircle(tableX - 140, tableY + 260, 70, "#e60000", "#660000");
+  drawCircle(tableX - 70, tableY + 500, 70, "#e60000", "#660000");
+  drawCircle(tableX + 210, tableY + 540, 70, "#e60000", "#660000");
+  drawCircle(tableX + 490, tableY + 540, 70, "#e60000", "#660000");
+  drawCircle(tableX + 770, tableY + 500, 70, "#e60000", "#660000");
+  drawCircle(tableX + 850, tableY + 260, 70, "#e60000", "#660000");
+  drawCircle(tableX + 830, tableY + 15, 70, "#e60000", "#660000");
 }
 
 function drawTable(x, y, insideColour, outsideColour) {
@@ -87,30 +96,109 @@ function drawCircle(x, y, rad, colour, lColour) {
   ctx.closePath();
 }
 
-function drawTableMarkings(tX, tY) {
+function drawTableMarkings() {
   //5 slots for the river
   ctx.fillStyle="#006600";
-  ctx.fillRect(tX + 160, tY + 180, 60, 80);
-  ctx.fillRect(tX + 240, tY + 180, 60, 80);
-  ctx.fillRect(tX + 320, tY + 180, 60, 80);
-  ctx.fillRect(tX + 400, tY + 180, 60, 80);
-  ctx.fillRect(tX + 480, tY + 180, 60, 80);
+  ctx.fillRect(tableX + 160, tableY + 60, 60, 80);
+  ctx.fillRect(tableX + 240, tableY + 60, 60, 80);
+  ctx.fillRect(tableX + 320, tableY + 60, 60, 80);
+  ctx.fillRect(tableX + 400, tableY + 60, 60, 80);
+  ctx.fillRect(tableX + 480, tableY + 60, 60, 80);
   //dealer slot
-  ctx.fillRect(tX + 380, tY - 80, 60, 80);
+  ctx.fillRect(tableX + 380, tableY - 80, 60, 80);
+  drawCard("back", 0, 0);
+
 }
 
-function drawCard() {
-  ctx.fillStyle="#fff";
-  ctx.fillRect(735, 225, 50, 70);
-  ctx.fillStyle="#ff751a";
-  ctx.fillRect(737, 227, 46, 66);
-  ctx.fillStyle="#fff";
-  ctx.fillRect(737, 235, 46, 2);
-  ctx.fillRect(737, 282, 46, 2);
+function drawCard(cardType, posX, posY) {
+  if (cardType == "back") {
+    ctx.fillStyle="#fff";
+    ctx.fillRect(tableX + 385 + posX, tableY - 75 + posY, 50, 70);
+    ctx.fillStyle="#ff751a";
+    ctx.fillRect(tableX + 387 + posX, tableY - 73 + posY, 46, 66);
+    ctx.fillStyle="#fff";
+    ctx.fillRect(tableX + 387 + posX, tableY - 65 + posY, 46, 2);
+    ctx.fillRect(tableX + 387 + posX, tableY - 18 + posY, 46, 2);
 
-  ctx.fillRect(753, 236, 1, 48);
-  ctx.fillRect(759, 236, 2, 48);
-  ctx.fillRect(766, 236, 1, 48);
+    ctx.fillRect(tableX + 403 + posX, tableY - 64 + posY, 1, 48);
+    ctx.fillRect(tableX + 409 + posX, tableY - 64 + posY, 2, 48);
+    ctx.fillRect(tableX + 416 + posX, tableY - 64 + posY, 1, 48);
+  }
+  else {
+    //card front colours
+    ctx.fillStyle="#fff";
+    ctx.fillRect(tableX + 385 + posX, tableY - 75 + posY, 50, 70);
+    ctx.fillStyle="#ff751a";
+    ctx.fillRect(tableX + 387 + posX, tableY - 73 + posY, 46, 66);
+    ctx.fillStyle="#fff";
+    ctx.fillRect(tableX + 389 + posX, tableY - 71 + posY, 42, 62);
+    //text
+    ctx.font="20px Arial";
+    if (cardType.charAt(0) == "s" || cardType.charAt(0) == "c")
+      ctx.fillStyle="#000";
+    else if (cardType.charAt(0) == "d" || cardType.charAt(0) == "h")
+      ctx.fillStyle="#ff0000";
+
+    if (cardType.length == 2) {
+      ctx.fillText(cardType.charAt(1), tableX + 390 + posX, tableY - 54 + posY);
+      ctx.fillText(cardType.charAt(1), tableX + 419 + posX, tableY - 10 + posY);
+    }
+    else if (cardType.length == 3) {
+      var type = cardType.substring(1, 3);
+      if (type == "10") {
+        ctx.fillText("10", tableX + 388 + posX, tableY - 54 + posY);
+        ctx.fillText("10", tableX + 408 + posX, tableY - 10 + posY);
+      }
+      else {
+        var cardVal = "X";
+        switch (type) {
+          case "11":
+            cardVal = "J";
+            break;
+          case "12":
+            cardVal = "Q";
+            break;
+          case "13":
+            cardVal = "K";
+            break;
+          case "14":
+            cardVal = "A";
+            break;
+        }
+        ctx.fillText(cardVal, tableX + 390 + posX, tableY - 54 + posY);
+        ctx.fillText(cardVal, tableX + 415 + posX, tableY - 10 + posY);
+      }
+    }
+
+
+    ctx.font="40px Arial";
+    var cardSuit = "X";
+    switch (cardType.charAt(0)) {
+      case "c":
+        cardSuit = "♣";
+        break;
+      case "s":
+        cardSuit = "♠";
+        break;
+      case "d":
+        cardSuit = "♦";
+        break;
+      case "h":
+        cardSuit = "♥";
+        break;
+    }
+    ctx.fillText(cardSuit, tableX + 398 + posX, tableY - 28 + posY);
+
+  }
+}
+
+function drawPlayerCardSlots() {
+  //start top left forplayer 1, go anti clockwise
+  ctx.fillStyle="#fff";
+  for (var i = 0; i < playerSeatCards.length; i++) {
+    ctx.fillRect(playerSeatCards[i][0], playerSeatCards[i][1], 50, 70);
+    ctx.fillRect(playerSeatCards[i][0] + 60, playerSeatCards[i][1], 50, 70);
+   }
 }
 
 //This loops the animation frames for animation!!!!
