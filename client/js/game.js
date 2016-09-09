@@ -6,6 +6,12 @@ var animFrame = window.requestAnimationFrame || window.webkitRequestAnimationFra
 
 window.addEventListener('mousedown', saveMouse, false);
 
+//
+var shownMessage = false;
+///////////////////////////////////////////////////////////////////////
+
+var endGame = false;
+var gameTick = 5;
 //Table local variables
 var tableX = 350,
     tableY = 300;
@@ -19,6 +25,10 @@ var playerSeatCards = [[tableX - 80, tableY - 30],
                         [tableX + 670, tableY + 200],
                         [tableX + 670, tableY - 30]];
 
+var cardQueue = [["d6", 100, 100]];
+//[cardtype, currentX, currentY, playerSeatNum, slot]
+var cardsOnTable = [["back", 0, 0, 0, 0]];
+
 //Creating instances of canvas and the canvas' 2d drawing
 var c = document.getElementById("pcanvas");
 var ctx = c.getContext("2d");
@@ -26,7 +36,8 @@ var ctx = c.getContext("2d");
 function mainLoop() {
   drawStationary();
   drawPlayerCardSlots();
-  drawCard("d3", 40, 100);
+  //drawCard("d3", 40, 100);
+  drawCardsOnTable();
   drawTestMarkers();
 }
 
@@ -201,12 +212,57 @@ function drawPlayerCardSlots() {
    }
 }
 
+function drawCardsOnTable() {
+  for (var i = 0; i < cardsOnTable.length; i++) {
+    drawCard(cardsOnTable[i][0], cardsOnTable[i][1], cardsOnTable[i][2]);
+  }
+};
+
 //This loops the animation frames for animation!!!!
 var recursiveAnim = function() {
           mainLoop();
           animFrame(recursiveAnim);
     };
+gameEngine();
 animFrame(recursiveAnim);
+
+//Game engine stuff
+function gameEngine() {
+  moveCards();
+
+
+
+  if (!endGame)
+  {
+    setTimeout(function () {
+      gameEngine();
+    }, gameTick);
+  }
+}
+
+function moveCards() {
+  for (var i = 0; i < cardsOnTable.length; i++) {
+    //if the cards have a direction set
+    if (cardsOnTable[i][3] != null && cardsOnTable[i][4] != null) {
+      var tempCardX = tableX + 385 + cardsOnTable[i][1],
+          tempCardY = tableY - 75 + cardsOnTable[i][2];
+      var targetX = (playerSeatCards[cardsOnTable[i][3]][0] + cardsOnTable[i][4]),
+          targetY = (playerSeatCards[cardsOnTable[i][3]][1]);
+      if (!shownMessage) {
+        console.log(cardsOnTable[i]);
+        shownMessage = true;
+      }
+      //x direction
+      if (tempCardX > targetX) {
+        cardsOnTable[i][1]-=1;
+      } else if (tempCardX < targetX) {
+        cardsOnTable[i][1]+=1;
+      } else if (tempCardX == targetX) {
+        cardsOnTable[i][3] = null;
+      }
+    }
+  }
+}
 
 // Functions for saving a mouse click #############################################
 function saveMouse(e) {
