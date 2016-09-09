@@ -252,14 +252,25 @@ function moveCards() {
         console.log(cardsOnTable[i]);
         shownMessage = true;
       }
+      var xChange = 0;
       //x direction
       if (tempCardX > targetX) {
-        cardsOnTable[i][1]-=1;
+        cardsOnTable[i][1]-=5;
       } else if (tempCardX < targetX) {
-        cardsOnTable[i][1]+=1;
+        cardsOnTable[i][1]+=5;
       } else if (tempCardX == targetX) {
         cardsOnTable[i][3] = null;
       }
+      if (xChange > 0) {
+        if (tempCardX + xChange > targetX) {
+          cardsOnTable[i][1] = targetX;
+        }
+      } else if (xChange < 0) {
+        if (tempCardX - xChange < targetX) {
+          cardsOnTable[i][1] = targetX;
+        }
+      }
+
     }
   }
 }
