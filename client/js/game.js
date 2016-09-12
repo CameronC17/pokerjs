@@ -6,9 +6,9 @@ var animFrame = window.requestAnimationFrame || window.webkitRequestAnimationFra
 
 window.addEventListener('mousedown', saveMouse, false);
 
-//
+//just to debug it
 var shownMessage = false;
-///////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
 
 var endGame = false;
 var gameTick = 1;
@@ -27,6 +27,8 @@ var playerSeatCards = [[tableX - 80, tableY - 30],
                         [tableX + 650, tableY + 400],
                         [tableX + 670, tableY + 200],
                         [tableX + 670, tableY - 30]];
+
+var tableLocations = [[500, 400], [700, 400], [900, 400]];
 
 var cardQueue = [["back", 0, 0, 0, 0],
 ["d8", 0, 0, 0, 1],
@@ -72,12 +74,19 @@ function drawMenuBackground() {
   ctx.fillStyle="#cccccc";
   ctx.fillRect(0, 0, c.width, 70);
   //header text
-  
+
 }
 
 function drawAvailable() {
-  ctx.fillStyle="#009900";
-  ctx.fillRect(100, 100, 180, 100);
+  for (var i = 0; i < tableLocations.length; i++) {
+    ctx.fillStyle="#009900";
+    ctx.fillRect(tableLocations[i][0], tableLocations[i][1], 150, 100);
+    ctx.fillStyle="#fff";
+    ctx.font = "20px arial";
+    ctx.fillText("RoomNumber", tableLocations[i][0] + 10, tableLocations[i][1] + 20);
+    ctx.font = "14px arial";
+    ctx.fillText("SB: " + "BB: ", tableLocations[i][0] + 10, tableLocations[i][1] + 40);
+  }
 }
 
 function drawGame() {
@@ -285,6 +294,14 @@ function gameEngine() {
   }
 }
 
+function registerClick(mouseX, mouseY) {
+  for (var i = 0; i < tableLocations.length; i++) {
+    if (mouseX >= tableLocations[i][0] && mouseX <= tableLocations[i][0] + 150 && mouseY >= tableLocations[i][1] && mouseY <= tableLocations[i][1] + 100) {
+      window.alert(i);
+    }
+  }
+}
+
 function moveCards() {
   for (var i = 0; i < cardsOnTable.length; i++) {
     //if the cards have a direction set
@@ -360,9 +377,11 @@ function dealACard() {
 
 // Functions for saving a mouse click #############################################
 function saveMouse(e) {
+  var mouseData = [];
   var pos = getMousePos(e);
   mouseData[0] = pos.x;
   mouseData[1] = pos.y;
+  registerClick(mouseData[0], mouseData[1]);
 }
 
 function getMousePos(evt) {
@@ -376,5 +395,6 @@ function getMousePos(evt) {
 //End mouse click stuff #############################################
 
 dealACard();
+
 
 }
