@@ -11,7 +11,7 @@ var shownMessage = false;
 ///////////////////////////////////////////////////////////////////////
 
 var endGame = false;
-var gameTick = 5;
+var gameTick = 1;
 //the speed at which a card is dealt
 var cardSpeed = 5;
 //Table local variables
@@ -259,6 +259,7 @@ function gameEngine() {
 function moveCards() {
   for (var i = 0; i < cardsOnTable.length; i++) {
     //if the cards have a direction set
+    var moved = false;
 
     if (cardsOnTable[i][3] != null) {
       var tempCardX = tableX + 385 + cardsOnTable[i][1],
@@ -267,9 +268,11 @@ function moveCards() {
       var xChange = 0;
       //x direction
       if (tempCardX > targetX) {
+        moved = true;
         cardsOnTable[i][1]-=cardSpeed;
         xChange -= cardSpeed;
       } else if (tempCardX < targetX) {
+        moved = true;
         cardsOnTable[i][1]+=cardSpeed;
         xChange += cardSpeed;
       }
@@ -292,9 +295,11 @@ function moveCards() {
       var yChange = 0;
       //y direction
       if (tempCardY > targetY) {
+        moved = true;
         cardsOnTable[i][2]-=cardSpeed;
         yChange -= cardSpeed;
       } else if (tempCardY < targetY) {
+        moved = true;
         cardsOnTable[i][2]+=cardSpeed;
         yChange += cardSpeed;
       }
@@ -310,11 +315,18 @@ function moveCards() {
       }
     }
 
+    if (tableX + 385 + cardsOnTable[i][1] == targetX && tableY - 75 + cardsOnTable[i][2] == targetY && moved) {
+       dealACard();
+    }
+
   }
 }
 
 function dealACard() {
-
+  if (cardQueue.length > 0) {
+    cardsOnTable.push(cardQueue[0]);
+    cardQueue.splice(0, 1);
+  }
 }
 
 // Functions for saving a mouse click #############################################
@@ -333,5 +345,7 @@ function getMousePos(evt) {
   };
 };
 //End mouse click stuff #############################################
+
+dealACard();
 
 }
