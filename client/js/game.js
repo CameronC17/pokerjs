@@ -12,7 +12,8 @@ var shownMessage = false;
 
 var endGame = false;
 var gameTick = 1;
-//the speed at which a card is dealt
+var screenSelection = 1;
+//the speed at which a card is dealt. dont change it or stuff breaks and i dont know why lol
 var cardSpeed = 5;
 //Table local variables
 var tableX = 350,
@@ -51,8 +52,36 @@ var c = document.getElementById("pcanvas");
 var ctx = c.getContext("2d");
 
 function mainLoop() {
+  if (screenSelection==1)
+    drawMenu();
+  else if (screenSelection==2)
+    drawGame();
+
+}
+
+function drawMenu() {
+  drawMenuBackground();
+  drawAvailable();
+
+}
+
+function drawMenuBackground() {
+  ctx.fillStyle="#000";
+  ctx.fillRect(0, 0, c.width, c.height);
+  //header
+  ctx.fillStyle="#cccccc";
+  ctx.fillRect(0, 0, c.width, 70);
+  //header text
+  
+}
+
+function drawAvailable() {
+  ctx.fillStyle="#009900";
+  ctx.fillRect(100, 100, 180, 100);
+}
+
+function drawGame() {
   drawStationary();
-  //drawCard("d3", 40, 100);
   drawCardsOnTable();
   drawTestMarkers();
 }
