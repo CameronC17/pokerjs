@@ -12,6 +12,8 @@ var shownMessage = false;
 
 var endGame = false;
 var gameTick = 5;
+//the speed at which a card is dealt
+var cardSpeed = 5;
 //Table local variables
 var tableX = 350,
     tableY = 300;
@@ -25,9 +27,24 @@ var playerSeatCards = [[tableX - 80, tableY - 30],
                         [tableX + 670, tableY + 200],
                         [tableX + 670, tableY - 30]];
 
-var cardQueue = [["d6", 100, 100]];
-//[cardtype, currentX, currentY, playerSeatNum, slot]
-var cardsOnTable = [["back", 0, 0, 0, 0]];
+var cardQueue = [["back", 0, 0, 0, 0],
+["d8", 0, 0, 0, 1],
+["back", 0, 0, 1, 0],
+["back", 0, 0, 1, 1],
+["c11", 0, 0, 2, 0],
+["back", 0, 0, 2, 1],
+["back", 0, 0, 3, 0],
+["back", 0, 0, 3, 1],
+["back", 0, 0, 4, 0],
+["s3", 0, 0, 4, 1],
+["back", 0, 0, 5, 0],
+["back", 0, 0, 5, 1],
+["h7", 0, 0, 6, 0],
+["back", 0, 0, 6, 1],
+["back", 0, 0, 7, 0],
+["back", 0, 0, 7, 1]];
+//[cardtype, currentX, currentY, playerSeatNum, slot (0 or 1)]
+var cardsOnTable = [];
 
 //Creating instances of canvas and the canvas' 2d drawing
 var c = document.getElementById("pcanvas");
@@ -35,7 +52,6 @@ var ctx = c.getContext("2d");
 
 function mainLoop() {
   drawStationary();
-  drawPlayerCardSlots();
   //drawCard("d3", 40, 100);
   drawCardsOnTable();
   drawTestMarkers();
@@ -118,7 +134,7 @@ function drawTableMarkings() {
   //dealer slot
   ctx.fillRect(tableX + 380, tableY - 80, 60, 80);
   drawCard("back", 0, 0);
-
+  drawPlayerCardSlots();
 }
 
 function drawCard(cardType, posX, posY) {
@@ -205,7 +221,7 @@ function drawCard(cardType, posX, posY) {
 
 function drawPlayerCardSlots() {
   //start top left forplayer 1, go anti clockwise
-  ctx.fillStyle="#fff";
+  ctx.fillStyle="#006600";
   for (var i = 0; i < playerSeatCards.length; i++) {
     ctx.fillRect(playerSeatCards[i][0], playerSeatCards[i][1], 50, 70);
     ctx.fillRect(playerSeatCards[i][0] + 60, playerSeatCards[i][1], 50, 70);
@@ -243,24 +259,21 @@ function gameEngine() {
 function moveCards() {
   for (var i = 0; i < cardsOnTable.length; i++) {
     //if the cards have a direction set
-    if (cardsOnTable[i][3] != null && cardsOnTable[i][4] != null) {
+
+    if (cardsOnTable[i][3] != null) {
       var tempCardX = tableX + 385 + cardsOnTable[i][1],
-          tempCardY = tableY - 75 + cardsOnTable[i][2];
-      var targetX = (playerSeatCards[cardsOnTable[i][3]][0] + cardsOnTable[i][4]),
-          targetY = (playerSeatCards[cardsOnTable[i][3]][1]);
-      if (!shownMessage) {
-        console.log(cardsOnTable[i]);
-        shownMessage = true;
-      }
+          targetX = (playerSeatCards[cardsOnTable[i][3]][0] + (cardsOnTable[i][4] * 60));
+
       var xChange = 0;
       //x direction
       if (tempCardX > targetX) {
-        cardsOnTable[i][1]-=5;
+        cardsOnTable[i][1]-=cardSpeed;
+        xChange -= cardSpeed;
       } else if (tempCardX < targetX) {
-        cardsOnTable[i][1]+=5;
-      } else if (tempCardX == targetX) {
-        cardsOnTable[i][3] = null;
+        cardsOnTable[i][1]+=cardSpeed;
+        xChange += cardSpeed;
       }
+
       if (xChange > 0) {
         if (tempCardX + xChange > targetX) {
           cardsOnTable[i][1] = targetX;
@@ -270,9 +283,38 @@ function moveCards() {
           cardsOnTable[i][1] = targetX;
         }
       }
-
     }
+
+    if (cardsOnTable[i][4] != null) {
+      var tempCardY = tableY - 75 + cardsOnTable[i][2],
+          targetY = (playerSeatCards[cardsOnTable[i][3]][1]);
+
+      var yChange = 0;
+      //y direction
+      if (tempCardY > targetY) {
+        cardsOnTable[i][2]-=cardSpeed;
+        yChange -= cardSpeed;
+      } else if (tempCardY < targetY) {
+        cardsOnTable[i][2]+=cardSpeed;
+        yChange += cardSpeed;
+      }
+
+      if (yChange > 0) {
+        if (tempCardY + yChange > targetY) {
+          cardsOnTable[i][2] = targetY;
+        }
+      } else if (yChange < 0) {
+        if (tempCardY - yChange < targetY) {
+          cardsOnTable[i][2] = targetY;
+        }
+      }
+    }
+
   }
+}
+
+function dealACard() {
+
 }
 
 // Functions for saving a mouse click #############################################
